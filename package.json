@@ -1,0 +1,28 @@
+{
+  "name": "mwc",
+  "version": "0.8.0",
+  "description": "Macro Web Components",
+  "main": "mwc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/briansturgill/macro-web-components.git"
+  },
+  "keywords": [
+    "HTML",
+    "Macro",
+    "WebComponents"
+  ],
+  "author": "Brian Sturgill",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/briansturgill/macro-web-components/issues"
+  },
+  "homepage": "https://github.com/briansturgill/macro-web-components",
+  "dependencies": {
+    "commander": "^2.6.0",
+    "htmlparser2": "^3.8.2"
+  }
+}
