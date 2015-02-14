@@ -103,7 +103,7 @@ If emitted, the `#error` prints an error message and aborts further processing.
 
 `## <!-- Escape for a # at the beginning of a line. -->`
 
- #### Example `#transform` Function
+##### Example `#transform` Function
 
 ```
     (function(text, attributes) {
