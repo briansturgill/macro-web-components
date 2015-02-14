@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				background: beige;
+			}
+			h2 {
+				color: brown;
+			}
+			iframe {
+				width: 300px;
+				height: 400px;
+				background: white;
+			}
+			.hbox {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+			}
+			.vbox {
+				display: flex;
+				flex-direction: column;
+			}
+		</style>
+	</head>
+	<body style="width:100%">
+		<div class="hbox">
+			<div class=vbox>
+			<h2>Bootstrap</h2>
+			<iframe src="sample_bootstrap.html"> </iframe>
+			</div>
+			<div class=vbox>
+			<h2>Polymer *</h2>
+			<iframe src="sample_polymer.html"> </iframe>
+			<div>* <small>Polymer menus currently have issues.</small></div>
+			</div>
+			<div class=vbox>
+			<h2>WinJS</h2>
+			<iframe src="sample_winjs.html"> </iframe>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,20 @@
+<span class="blink ${class?}"><content@></span>
+
+#style
+.blink {
+	-webkit-animation: blink 1s linear infinite;
+	animation: blink 1s linear infinite;
+}
+
+@-webkit-keyframes blink {
+	0% { opacity: 1.0; }
+	90% { opacity: 1.0; }
+	90.0001% { opacity: 0.0; }
+	100% { opacity: 0.0; }
+}
+@keyframes blink {
+	0% { opacity: 1.0; }
+	90% { opacity: 1.0; }
+	90.0001% { opacity: 0.0; }
+	100% { opacity: 0.0; }
+}

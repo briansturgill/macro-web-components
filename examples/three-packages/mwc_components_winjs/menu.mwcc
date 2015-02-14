@@ -1,0 +1,23 @@
+	<button id="${uid@}" class="myapp-menu">
+#if icon == "hamburger"
+		Menu
+#elif defined(label)
+		$label
+#else
+    #error "Must specify either icon or label attribute"
+#endif
+	</button>
+<div id="${uid@}-.menu" data-win-control="WinJS.UI.Menu">
+	<content@/>
+</div>
+#script
+WinJS.UI.processAll().done(function () {
+	var menus = document.getElementsByClassName("myapp-menu");
+	for(var i=0; i<menus.length; i++) {
+	  menubutton = menus[i]
+		menubutton.addEventListener("click", function () {
+			var menu = document.getElementById(menubutton.id+"-.menu").winControl;
+			menu.show(menubutton, "bottom");
+		});
+	}
+});

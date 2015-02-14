@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Polymer my-counter example</title>
+		<script type="text/javascript" src="js/hlp.js"></script>
+	</head>
+	<body>
+		<my-counter@>First Counter</my-counter@>
+		<my-counter@ counter="5">Second Counter</my-counter@>
+	</body>
+</html>

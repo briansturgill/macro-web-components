@@ -35,16 +35,16 @@ if (String.prototype.endsWith === undefined) {
 commander
 	.version('0.9.0')
 	.usage('[options] input_file')
-	.option('-c, --style_file [name]', 'Set CSS or other style (LESS, SASS, Styles, etc.) output filename')
+	.option('-c, --style_file [name]', 'Set CSS or other style (LESS, SASS, Stylus, etc.) output filename')
 	.option('-h, --html_file [name]')
 	.option('-j, --script_file [name]', 'Set JavaScript or other script (TypeScript, CoffeeScript, etc.) output file name.')
-	.option('-p, --platform name')
+	.option('-p, --platform [name]')
 	.parse(process.argv);
 
-//LATER need to have this install via npm.
-//LATER need source map support.
-//LATER (MUCH) need grunt/gulp support
-//LATER need to handle components that are common between platforms.
+var platformTag = "";
+if (commander.platform !== undefined) {
+	var platformTag = '_'+commander.platform;
+}
 
 if (commander.args.length != 1) {
 	console.error(commander.help());
@@ -57,22 +57,19 @@ if (!inputFile.endsWith(".mwch")) {
 	process.exit(3);
 }
 
-var htmlFile = inputFile.replace(/\.mwch$/, '.html');
+var fileStub = inputFile.replace(/\.mwch$/, '')+platformTag;
+
+var htmlFile = fileStub+'.html';
 if (commander.html_file !== undefined) {
 	htmlFile = commander.html_file;
 }
-var styleFile = inputFile.replace(/\.mwch$/, '.css');
+var styleFile = fileStub+'.css';
 if (commander.style_file !== undefined) {
 	styleFile = commander.style_file;
 }
-var scriptFile = inputFile.replace(/\.mwch$/, '.js');
+var scriptFile = fileStub+'.js';
 if (commander.script_file !== undefined) {
 	scriptFile = commander.script_file;
-}
-
-var platformTag = "";
-if (commander.platform !== undefined) {
-	var platformTag = '_'+commander.platform;
 }
 
 var singleton_tags = [
@@ -142,7 +139,7 @@ function expandAttrMacros(attrs) {
 	var expansionNeeded = false;
 	var i;
 	for(i=0; i<attrKeys.length; i++) {
-		if (attrKeys[i].endsWith('@')) {
+		if (attrKeys[i].startsWith('.')) {
 			expansionNeeded = true;
 			break;
 		}
@@ -159,8 +156,8 @@ function expandAttrMacros(attrs) {
 		newAttrs['class'] = '';
 	}
 	for(i=0; i<attrKeys.length; i++) {
-		if (attrKeys[i].endsWith('@')) {
-			var name = attrKeys[i].substr(0,attrKeys[i].length-1);
+		if (attrKeys[i].startsWith('.')) {
+			var name = attrKeys[i].substr(1,attrKeys[i].length-1);
 			if(newAttrs['class'] !== '') {
 				newAttrs['class'] += ' ';
 			}
@@ -168,7 +165,7 @@ function expandAttrMacros(attrs) {
 		}
 	}
 	for(i=0; i<attrKeys.length; i++) {
-		if (attrKeys[i].endsWith('@') || attrKeys[i] === 'class') {
+		if (attrKeys[i].startsWith('.') || attrKeys[i] === 'class') {
 			continue;
 		}
 		newAttrs[attrKeys[i]] = attrs[attrKeys[i]];
@@ -179,33 +176,8 @@ function expandAttrMacros(attrs) {
 var scriptSeen = {};
 var styleSeen = {};
 
+
 function preprocess(html, attributes, cfname) {
-	// LATER
-	// #if
-	// #elseif ...         <!-- no nesting! -->
-	// #else
-	// #endif
-	//
-	// #error
-	//
-	// ## escape
-	//
-	// #style
-	//
-	// #script
-	//
-	// #transform
-	//  <!-- You write an anonymous function.
-	//       It will be called with arguments (text, attributes).
-	//       It must return the transformed text.
-	//       This is executed with eval, be gentle about what you do inside it!
-	//       Remember this function is only called at generation time, not when you
-	//       have deployed the output to the web.
-	//       (function(text, attributes) {
-	//       		// Make changes to text.
-	//       		return text;
-	//       })
-	//
 	var lines = html.split('\n');
 	var scriptStarted = false;
 	var styleStarted = false;
@@ -220,27 +192,116 @@ function preprocess(html, attributes, cfname) {
 	if (styleSeen[cfname] !== undefined) {
 				suppressStyle = true;
 	}
+
 	function  misplacedTag(tag, idx) {
 		idx += 1;
 		console.error('Misplaced tag: "#'+tag+'" at line:'+idx+' in: '+cfname);
 		process.exit(8);
 	}
+
+	function evalExpr(expr, attrs, cfna) {
+		if (expr === undefined) {
+			console.error('Missing expression at line:'+i+' in: '+cfname);
+			process.exit(8);
+		}
+		var eparts = /\s*(\w+)\s*(===|!==|==|!=)\s*("[^"]*"|'[^']*')/.exec(expr);
+		if (eparts !== null) {
+			var str = eparts[3].substr(1, eparts[3].length-2); // Remove quotes
+			if (eparts[2] === '===' || eparts[2] === '==') {
+				return attrs[eparts[1]] === str;
+			} else {
+				return attrs[eparts[1]] !== str;
+			}
+		}
+		eparts = /\s*defined\((\w+)\)/.exec(expr);
+		if (eparts === null) {
+			console.error('Invalid expression ('+expr+') at line:'+i+' in: '+cfname);
+			process.exit(8);
+		}
+		return attrs[eparts[1]] !== undefined;
+	}
+
+	var ifBlockSatisfied = false;
+	var ifStarted = false;
+	var elseSeen = false;
+	var suppressingLines = false;
 	for (var i=0; i<lines.length; i++) {
-		var tmp = /^#([a-z]+)/.exec(lines[i]);
+		var tmp = /^#([a-z]+)(.*)/.exec(lines[i]);
 		var tag;
+		var expr;
 		if (tmp === null) {
+			if (suppressingLines) {
+				lines[i] = '';
+			}
 			continue;
 		} else {
 			tag = tmp[1];
+			expr = tmp[2];
 		}
 		if (tag === 'script' || tag === 'transform' || tag === 'style') {
 			break;
 		}
 		if (tag === 'if') {
+			if (ifStarted) {
+				misplacedTag('if', i);
+			}
+			ifStarted = true;
+			elseSeen = false;
+			lines[i] = '';
+			if (evalExpr(expr, attributes)) {
+				ifBlockSatisfied = true;
+				suppressingLines = false;
+			} else {
+				ifBlockSatisfied = false;
+				suppressingLines = true;
+			}
 		} else if (tag === 'elif') {
+			if (!ifStarted || elseSeen) {
+				misplacedTag('elif', i);
+			}
+			if (!ifBlockSatisfied) {
+				if (evalExpr(expr, attributes)) {
+					ifBlockSatisfied = true;
+					suppressingLines = false;
+				} else {
+					ifBlockSatisfied = false;
+					suppressingLines = true;
+				}
+			} else {
+				suppressingLines = true;
+			}
+			lines[i] = '';
 		} else if (tag === 'else') {
-		} else if (tag === 'endife') {
+			if (!ifStarted) {
+				misplacedTag('else', i);
+			}
+			elseSeen = true;
+			if (!ifBlockSatisfied) {
+				ifBlockSatisfied = true;
+				suppressingLines = false;
+			} else {
+				suppressingLines = true;
+			}
+			lines[i] = '';
+		} else if (tag === 'endif') {
+			if (!ifStarted) {
+				misplacedTag('endif', i);
+			}
+			ifStarted = false;
+			suppressingLines = false;
+			lines[i] = '';
+		} else if (tag === 'error') {
+			console.error(cfname+'('+i+') ERROR: '+expr.trim());
+			process.exit(8);
+		} else {
+			console.error('Unknown tag: "#'+tag+'" at line:'+i+' in: '+cfname);
+			process.exit(8);
 		}
+	}
+
+	if (ifStarted) {
+		console.error('Missing #endif in: '+cfname);
+		process.exit(8);
 	}
 
 	function copyPart(fd, lines, idx, suppress) {
@@ -305,7 +366,13 @@ function preprocess(html, attributes, cfname) {
 	}
 	lines[0] = '<!-- Begin: '+cfname+' -->\n'+lines[0];
 	lines.push('<!-- End: '+cfname+' -->');
-	return { html:lines.join('\n'), transform:transform };
+	for (i=0; i<lines.length; i++) {
+		if (lines[i] !== '') {
+			lines[i] = lines[i] +'\n';
+		}
+	}
+
+	return { html:lines.join(''), transform:transform };
 }
 
 function makeAttrArgs(attrs) {
@@ -410,12 +477,15 @@ function setChildContent(n, content) {
 function handleComponent(node) {
 	var root = { type:"root", value:"", children: [], parent:null };
 	var name = node.value.substr(0,node.value.length-1);
-	var cfname = "mwc_components"+platformTag+"/"+name+".mwcc";
+	var cfname = "mwc_components/"+name+".mwcc";
 	if (!fs.existsSync(cfname)) {
 		cfname = "mwc_components_common/"+name+".mwcc";
 		if (!fs.existsSync(cfname)) {
-			console.error('Cannot find component "'+name+'" at path: '+cfname);
-			process.exit(7);
+			cfname = "mwc_components"+platformTag+"/"+name+".mwcc";
+			if (!fs.existsSync(cfname)) {
+				console.error('Cannot find component "'+name);
+				process.exit(7);
+			}
 		}
 	}
 
@@ -500,6 +570,12 @@ function printTree(fd, n, indentLevel) {
 	});
 	switch(n.type) {
 		case 'tag':
+			if (n.value === "head") {
+				printIndent(fd, indentLevel);
+				fs.writeSync(fd, '<link rel="stylesheet" type="text/css" href="'+styleFile+'">\n');
+				printIndent(fd, indentLevel);
+				fs.writeSync(fd, '<script type="text/javascript" src="'+scriptFile+'"></script>\n');
+			}
 			indentLevel--;
 			if (singleton_tags.indexOf(n.value) === -1) {
 				printIndent(fd, indentLevel);

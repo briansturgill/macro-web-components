@@ -1,0 +1,14 @@
+<core-menu-button relative>
+#if icon == "hamburger"
+  <core-icon-button id="${uid@}" icon="menu"></core-icon-button>
+#elif defined(label)
+		<button id="${uid@}">${label}</button>
+#else
+    #error "Must specify either icon or label attribute"
+#endif
+  <core-dropdown class="dropdown" relatedTarget="{{$.${uid@}}}" layered>
+    <core-menu class="menu">
+      <content@>
+		</core-menu>
+  </core-dropdown>
+</core-menu-button>

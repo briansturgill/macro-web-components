@@ -1,0 +1,14 @@
+<div class="dropdown">
+	<button id="${uid@}" class="btn btn-primary btn-lg" type="button" data-toggle="dropdown" aria-haspop="true" aria-expanded="false">
+#if icon == "hamburger"
+		<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+#elif defined(label)
+		$label
+#else
+    #error "Must specify either icon or label attribute"
+#endif
+	</button>
+	<ul class="dropdown-menu" role="menu" aria-labeledby="${uid@}">
+		<content@/>
+	</ul>
+</div>

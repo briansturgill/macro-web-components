@@ -1,0 +1,42 @@
+<div class="my-counter ${class?}" ${attributes-as-args@}>
+	<label><content@></label>
+	<div>Value: <span id="${uid@}-.span"/></div>
+	<button id=${uid@}-.button><blink@>Increment</blink@></button>
+</div>
+
+#style
+
+.my-counter {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.my-counter button {
+	font-weight: bold;
+}
+.my-counter label {
+	font-weight: bold;
+}
+
+#script
+
+hlp.initComponentClass('my-counter', function(scope, attrs) { 
+	var uid = attrs['uid@'];
+	scope.counter = attrs.counter;
+	if (scope.counter === undefined) { 
+		scope.counter = 0;
+	} else {
+		scope.counter = parseInt(scope.counter, 10);
+	}
+	hlp.$(uid+'-.span').textContent = scope.counter.toString();
+	scope.increment = function () {
+		scope.counter++;
+		hlp.$(uid+'-.span').classList.add('my-counter-highlight');
+		hlp.$(uid+'-.span').textContent = scope.counter.toString();
+	};
+	hlp.$(uid+'-.button').addEventListener("click", function(e) {
+		scope.increment();
+	});
+});
+

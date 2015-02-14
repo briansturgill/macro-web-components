@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<kitchen-sink@ a="1" b="2"></kitchen-sink@>
+		<kitchen-sink@ b="2" .flex></kitchen-sink@>
+	</body>
+</html>

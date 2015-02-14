@@ -1,0 +1,29 @@
+<div ${class?=}>
+#if a == "5"
+Should not see this a==5
+#elif b == "2"
+Should see this
+#else
+Should not see else first else
+#endif
+#if a == "5"
+Should not see this a==5
+#elif b == "3"
+Should not see this b==3
+#elif b == "6"
+Should not see this b==6
+#else
+Should see else
+#endif
+#if a == "5"
+Should not see this a==5
+#elif b == "12"
+Should see no see this b==12
+#elif b == "2"
+Should see this
+#elif b == "14"
+Should see no see this b==14
+#else
+Should not see else first else
+#endif
+</div>

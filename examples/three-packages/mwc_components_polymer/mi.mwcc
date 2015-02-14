@@ -1,0 +1,6 @@
+<core-item ${label=}></core-item>
+#style
+core-item.core-selected {
+	background: gray;
+	color: white;
+}

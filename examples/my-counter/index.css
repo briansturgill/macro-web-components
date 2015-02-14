@@ -1,0 +1,38 @@
+/* Begin: mwc_components/my-counter.mwcc */
+
+.my-counter {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.my-counter button {
+	font-weight: bold;
+}
+.my-counter label {
+	font-weight: bold;
+}
+
+/* End: mwc_components/my-counter.mwcc */
+
+/* Begin: mwc_components/blink.mwcc */
+.blink {
+	-webkit-animation: blink 1s linear infinite;
+	animation: blink 1s linear infinite;
+}
+
+@-webkit-keyframes blink {
+	0% { opacity: 1.0; }
+	90% { opacity: 1.0; }
+	90.0001% { opacity: 0.0; }
+	100% { opacity: 0.0; }
+}
+@keyframes blink {
+	0% { opacity: 1.0; }
+	90% { opacity: 1.0; }
+	90.0001% { opacity: 0.0; }
+	100% { opacity: 0.0; }
+}
+
+/* End: mwc_components/blink.mwcc */
+

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Example</title>
+		<platform-head@/>
+	</head>
+	<body style="padding:1in">
+		<div>
+			<menu@ id="Menu" icon="hamburger">
+				<mi@ action="alpha" label="Alpha"/>
+				<mi@ action="beta" label="Beta"/>
+				<ms@/>
+				<mi@ action="omega" label="Omega"/>
+			</menu@>
+			<div>&nbsp;</div>
+			<button@ lg-btn@>Test</button@>
+		</div>
+	<platform-tail@/>
+	</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "three-packages",
+  "version": "1.0.0",
+  "homepage": "https://github.com/briansturgill/macro-web-components",
+  "authors": [
+    "Brian Sturgill <codersnext@gmail.com>"
+  ],
+  "description": "Example of using MWC with Bootstrap, Polymer and WinJS",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "~0.5.4",
+    "bootstrap": "~3.3.2",
+    "winjs": "*",
+    "core-icons": "Polymer/core-icons#~0.5.4",
+    "core-menu": "Polymer/core-menu#~0.5.4",
+    "paper-button": "Polymer/paper-button#~0.5.4",
+    "font-roboto": "Polymer/font-roboto#~0.5.4",
+    "core-icon-button": "Polymer/core-icon-button#~0.5.4",
+    "core-menu-button": "Polymer/core-menu-button#~0.5.4",
+    "core-dropdown": "Polymer/core-dropdown#~0.5.4"
+  }
+}

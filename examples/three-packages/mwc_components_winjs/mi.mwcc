@@ -1,0 +1,1 @@
+<button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label:'${label}', type:'button'}"></button>

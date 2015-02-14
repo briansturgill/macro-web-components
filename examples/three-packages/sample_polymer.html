@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      Example
+    </title>
+    <!-- Begin: mwc_components_polymer/platform-head.mwcc -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <script src="bower_components/webcomponentsjs/webcomponents.min.js">
+    </script>
+    <link rel="import" href="bower_components/font-roboto/roboto.html">
+    <link rel="import" href="bower_components/core-dropdown/core-dropdown.html">
+    <link rel="import" href="bower_components/core-menu/core-menu.html">
+    <link rel="import" href="bower_components/core-menu-button/core-menu-button.html">
+    <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
+    <link rel="import" href="bower_components/core-item/core-item.html">
+    <link rel="import" href="bower_components/paper-button/paper-button.html">
+    <!-- End: mwc_components_polymer/platform-head.mwcc -->
+    <link rel="stylesheet" type="text/css" href="sample_polymer.css">
+    <script type="text/javascript" src="sample_polymer.js"></script>
+  </head>
+  <body style="padding:1in">
+    <div>
+      <!-- Begin: mwc_components_polymer/menu.mwcc -->
+      <core-menu-button relative="">
+        <core-icon-button id="Menu" icon="menu">
+        </core-icon-button>
+        <core-dropdown class="dropdown" relatedtarget="{{$.Menu}}" layered="">
+          <core-menu class="menu">
+            <!-- Begin: mwc_components_polymer/mi.mwcc -->
+            <core-item label="Alpha">
+            </core-item>
+            <!-- End: mwc_components_polymer/mi.mwcc -->
+            <!-- Begin: mwc_components_polymer/mi.mwcc -->
+            <core-item label="Beta">
+            </core-item>
+            <!-- End: mwc_components_polymer/mi.mwcc -->
+            <!-- Begin: mwc_components_polymer/ms.mwcc -->
+            <hr>
+            <!-- End: mwc_components_polymer/ms.mwcc -->
+            <!-- Begin: mwc_components_polymer/mi.mwcc -->
+            <core-item label="Omega">
+            </core-item>
+            <!-- End: mwc_components_polymer/mi.mwcc -->
+          </core-menu>
+        </core-dropdown>
+      </core-menu-button>
+      <!-- End: mwc_components_polymer/menu.mwcc -->
+      <div>
+        &nbsp;
+      </div>
+      <!-- Begin: mwc_components_polymer/button.mwcc -->
+      <paper-button style="background:green;color:white;">
+        Test
+      </paper-button>
+      <!-- End: mwc_components_polymer/button.mwcc -->
+    </div>
+    <!-- Begin: mwc_components_polymer/platform-tail.mwcc -->
+    <!-- Intended for script tags that must run last -->
+    <!-- End: mwc_components_polymer/platform-tail.mwcc -->
+  </body>
+</html>

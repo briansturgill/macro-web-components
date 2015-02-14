@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      Example
+    </title>
+    <!-- Begin: mwc_components_winjs/platform-head.mwcc -->
+    <link href="bower_components/winjs/css/ui-light.css" rel="stylesheet">
+    <script src="bower_components/winjs/js/WinJS.min.js">
+    </script>
+    <!-- End: mwc_components_winjs/platform-head.mwcc -->
+    <link rel="stylesheet" type="text/css" href="sample_winjs.css">
+    <script type="text/javascript" src="sample_winjs.js"></script>
+  </head>
+  <body style="padding:1in">
+    <div>
+      <!-- Begin: mwc_components_winjs/menu.mwcc -->
+      <button id="Menu" class="myapp-menu">
+        Menu
+      </button>
+      <div id="Menu-.menu" data-win-control="WinJS.UI.Menu">
+        <!-- Begin: mwc_components_winjs/mi.mwcc -->
+        <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label:'Alpha', type:'button'}">
+        </button>
+        <!-- End: mwc_components_winjs/mi.mwcc -->
+        <!-- Begin: mwc_components_winjs/mi.mwcc -->
+        <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label:'Beta', type:'button'}">
+        </button>
+        <!-- End: mwc_components_winjs/mi.mwcc -->
+        <!-- Begin: mwc_components_winjs/ms.mwcc -->
+        <hr data-win-control="WinJS.UI.MenuCommand" data-win-options="{type: 'separator'}">
+        <!-- End: mwc_components_winjs/ms.mwcc -->
+        <!-- Begin: mwc_components_winjs/mi.mwcc -->
+        <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label:'Omega', type:'button'}">
+        </button>
+        <!-- End: mwc_components_winjs/mi.mwcc -->
+      </div>
+      <!-- End: mwc_components_winjs/menu.mwcc -->
+      <div>
+        &nbsp;
+      </div>
+      <!-- Begin: mwc_components_winjs/button.mwcc -->
+      <button class="btn btn-lg ">
+        Test
+      </button>
+      <!-- End: mwc_components_winjs/button.mwcc -->
+    </div>
+    <!-- Begin: mwc_components_winjs/platform-tail.mwcc -->
+    <!-- Intended for script tags that must run last -->
+    <!-- End: mwc_components_winjs/platform-tail.mwcc -->
+  </body>
+</html>
