@@ -3,7 +3,7 @@
 #if icon == "hamburger"
 		<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
 #elif defined(label)
-		$label
+		${label}
 #else
     #error "Must specify either icon or label attribute"
 #endif

@@ -39,8 +39,13 @@ commander
 	.option('-h, --html_file [name]')
 	.option('-j, --script_file [name]', 'Set JavaScript or other script (TypeScript, CoffeeScript, etc.) output file name.')
 	.option('-p, --platform [name]')
+	.option('-S, --suppress_comments')
 	.parse(process.argv);
 
+var suppressComments = false;
+if (commander.suppress_comments !== undefined) {
+	suppressComments = true;
+}
 var platformTag = "";
 if (commander.platform !== undefined) {
 	var platformTag = '_'+commander.platform;
@@ -324,24 +329,32 @@ function preprocess(html, attributes, cfname) {
 			scriptSeen[cfname] = true;
 			if (!suppressScript) {
 				fd = fs.openSync(scriptFile, "a");
-				fs.writeSync(fd, '// Begin: '+cfname+'\n');
+				if (!suppressComments) {
+					fs.writeSync(fd, '// Begin: '+cfname+'\n');
+				}
 			}
 			lines[i] = "";
 			i = copyPart(fd, lines, i+1, suppressScript);
 			if (!suppressScript) {
-				fs.writeSync(fd, '// End: '+cfname+'\n\n');
+				if (!suppressComments) {
+					fs.writeSync(fd, '// End: '+cfname+'\n\n');
+				}
 				fs.closeSync(fd);
 			}
 		} else if (lines[i].startsWith('#style')) {
 			styleSeen[cfname] = true;
 			if (!suppressStyle) {
 				fd = fs.openSync(styleFile, "a");
-				fs.writeSync(fd, '/* Begin: '+cfname+' */\n');
+				if (!suppressComments) {
+					fs.writeSync(fd, '/* Begin: '+cfname+' */\n');
+				}
 			}
 			lines[i] = '';
 			i = copyPart(fd, lines, i+1, suppressStyle);
 			if (!suppressStyle) {
-				fs.writeSync(fd, '/* End: '+cfname+' */\n\n');
+				if (!suppressComments) {
+					fs.writeSync(fd, '/* End: '+cfname+' */\n\n');
+				}
 				fs.closeSync(fd);
 			}
 		} else if (lines[i].startsWith('#transform')) {
@@ -364,8 +377,10 @@ function preprocess(html, attributes, cfname) {
 			process.exit(10);
 		}
 	}
-	lines[0] = '<!-- Begin: '+cfname+' -->\n'+lines[0];
-	lines.push('<!-- End: '+cfname+' -->');
+	if (!suppressComments) {
+		lines[0] = '<!-- Begin: '+cfname+' -->\n'+lines[0];
+		lines.push('<!-- End: '+cfname+' -->');
+	}
 	for (i=0; i<lines.length; i++) {
 		if (lines[i] !== '') {
 			lines[i] = lines[i] +'\n';

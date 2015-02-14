@@ -1,7 +1,7 @@
 # Macro Web Components
 HTML macros and code organization to give you web components for all browsers, now.
 
-This is the reference manual for Macro Web Components. If you want an overview, see [this blog post](LATER). If you unfamiliar with macro expansion or if you don't know why you might want to use it, you should start with that blog post.
+This is the reference manual for Macro Web Components. If you want an overview, see [this blog post](http://codersnext.com/introducing-macro-web-components). If you unfamiliar with macro expansion or if you don't know why you might want to use it, you should start with that blog post.
 
 Using HTMl Macro Web Components consists of two types of files: HTML and Component.
 
@@ -245,6 +245,7 @@ Options:
 -j, --script_file [name]  Set JavaScript or other script (TypeScript,                  
                               CoffeeScript, etc.) output file name.
 -p, --platform [name]
+-S, --suppress_comments
 ```
 Normally, components are placed in a `mwc_components` folder where they could be considered to be specific to your app. They can also be place in `mwc_components_common` which could be where you place shared components. If the `--platform` options is given (say with 'bootstrap'), then you would place the Bootstrap specific ones in `mwc_components_bootstrap`. And then you could place equivalent components for `WinJS` in `mwc_components_winjs` and use the same per app components and common components with one `.mcwh` file to generate files for both platforms.
 

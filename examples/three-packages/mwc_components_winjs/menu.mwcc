@@ -2,7 +2,7 @@
 #if icon == "hamburger"
 		Menu
 #elif defined(label)
-		$label
+		${label}
 #else
     #error "Must specify either icon or label attribute"
 #endif

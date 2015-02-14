@@ -1,4 +1,3 @@
-// Begin: mwc_components_winjs/menu.mwcc
 WinJS.UI.processAll().done(function () {
 	var menus = document.getElementsByClassName("myapp-menu");
 	for(var i=0; i<menus.length; i++) {
@@ -9,6 +8,4 @@ WinJS.UI.processAll().done(function () {
 		});
 	}
 });
-
-// End: mwc_components_winjs/menu.mwcc
 
